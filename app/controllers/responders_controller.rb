@@ -29,9 +29,9 @@ class RespondersController < ApplicationController
 
   def responder_params
     case action_name
-    when "create"
+    when 'create'
       params.require(:responder).permit(:capacity, :name, :type)
-    when "update"
+    when 'update'
       params.require(:responder).permit(:on_duty)
     end
   end
