@@ -1,11 +1,14 @@
 class Responder < ActiveRecord::Base
+  TYPES = [:fire, :police, :medical]
   self.inheritance_column = nil
 
-  enum type: { fire: 0, police: 1, medical: 2 }
+  enum type: TYPES
 
   validates :name, presence: true, uniqueness: true
   validates :type, presence: true
   validates :capacity, presence: true, inclusion: 1..5
+
+  scope :on_duty, -> { where(on_duty: true) }
 
   def as_json(*)
     {
