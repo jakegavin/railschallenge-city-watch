@@ -4,11 +4,14 @@ class Responder < ActiveRecord::Base
 
   enum type: TYPES
 
+  belongs_to :emergency
+
   validates :name, presence: true, uniqueness: true
   validates :type, presence: true
   validates :capacity, presence: true, inclusion: 1..5
 
   scope :on_duty, -> { where(on_duty: true) }
+  scope :available, -> { where(emergency: nil) }
 
   def as_json(*)
     {
