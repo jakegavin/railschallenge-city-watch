@@ -1,7 +1,11 @@
 class EmergenciesController < ApplicationController
   def index
     emergencies = Emergency.all
-    render json: { emergencies: emergencies, full_responses: FullResponseCount.new(emergencies)  }
+    full_response_count = [
+      emergencies.select(&:full_response?).count,
+      emergencies.count
+    ]
+    render json: { emergencies: emergencies, full_responses: full_response_count  }
   end
 
   def show
