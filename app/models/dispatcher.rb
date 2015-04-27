@@ -11,6 +11,10 @@ class Dispatcher
     end
   end
 
+  def resolve!
+    emergency.responders.update_all(emergency_id: nil) if emergency.resolved_at.present?
+  end
+
   Responder::TYPES.each do |type|
     define_method("dispatch_#{type}_responders") do
       emergency_type_severity = emergency.send("#{type}_severity")

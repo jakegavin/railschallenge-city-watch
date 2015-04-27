@@ -32,5 +32,6 @@ class Emergency < ActiveRecord::Base
 
   def dispatch_responders!
     Dispatcher.new(self).dispatch!
+    Dispatcher.new(self).resolve!
   end
 end

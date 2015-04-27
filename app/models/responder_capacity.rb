@@ -15,9 +15,9 @@ class ResponderCapacity
     define_method("#{type}_capacity") do
       capacity_array = []
       capacity_array << responders.send(type).map(&:capacity).sum
-      capacity_array << responders.send(type).map(&:capacity).sum
+      capacity_array << responders.send(type).available.map(&:capacity).sum
       capacity_array << responders.send(type).on_duty.map(&:capacity).sum
-      capacity_array << responders.send(type).on_duty.map(&:capacity).sum
+      capacity_array << responders.send(type).on_duty.available.map(&:capacity).sum
       capacity_array
     end
   end
