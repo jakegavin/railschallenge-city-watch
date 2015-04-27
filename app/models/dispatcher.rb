@@ -12,6 +12,7 @@ class Dispatcher
   end
 
   def resolve!
+    emergency.update_columns(resolved_full_response: emergency.full_response?) if emergency.resolved_at.present?
     emergency.responders.update_all(emergency_id: nil) if emergency.resolved_at.present?
   end
 

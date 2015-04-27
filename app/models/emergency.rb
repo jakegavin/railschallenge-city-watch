@@ -20,18 +20,26 @@ class Emergency < ActiveRecord::Base
     }
   end
 
+  def full_response?
+    if resolved_at.present?
+      resolved_full_response.nil? ? calculate_full_response : resolved_full_response
+    else
+      calculate_full_response
+    end
+  end
+
   private
 
-  def full_response?
+  def dispatch_responders!
+    Dispatcher.new(self).dispatch!
+    Dispatcher.new(self).resolve!
+  end
+
+  def calculate_full_response
     Responder::TYPES.all? do |type|
       severity = send("#{type}_severity")
       responder_capacity = responders.send("#{type}").sum(:capacity)
       severity - responder_capacity == 0
     end
-  end
-
-  def dispatch_responders!
-    Dispatcher.new(self).dispatch!
-    Dispatcher.new(self).resolve!
   end
 end
