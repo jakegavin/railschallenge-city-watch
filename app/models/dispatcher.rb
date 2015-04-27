@@ -25,13 +25,13 @@ class Dispatcher
         emergency.responders << perfect_responder.take
       else
         qualified_responders = Responder.send(type).on_duty.available.order('capacity DESC')
-        assign_these_responders = []
+        pending_responders = []
         qualified_responders.each do |responder|
-          if assign_these_responders.sum(&:capacity) < emergency_type_severity
-            assign_these_responders << responder
+          if pending_responders.sum(&:capacity) < emergency_type_severity
+            pending_responders << responder
           end
         end
-        emergency.responders << assign_these_responders
+        emergency.responders << pending_responders
       end
     end
   end
